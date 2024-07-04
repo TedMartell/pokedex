@@ -35,8 +35,7 @@ func (c *Client) ListLocationAreas() (LocationAreasResp, error) {
 	err = json.Unmarshal(dat, &locationAreasResp)
 	if err != nil {
 		return LocationAreasResp{}, err
-
 	}
-	return LocationAreasResp{}, nil
 
+	return locationAreasResp, nil
 }
