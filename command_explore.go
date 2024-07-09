@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func callbackExplore(cfg *config, args ..string) error {
+func callbackExplore(cfg *config, args ...string) error {
 
 	if len(args) != 1 {
 		return errors.New("no location area provided")
@@ -13,13 +13,12 @@ func callbackExplore(cfg *config, args ..string) error {
 
 	locationAreaName := args[0]
 
-
 	locationArea, err := cfg.pokeapiClient.GetLocationArea(locationAreaName)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("Pokemon in%s:\n", &locationArea.Name)
+	fmt.Printf("Pokemon in%s:\n", locationArea.Name)
 
 	for _, pokemon := range locationArea.PokemonEncounters {
 		fmt.Printf("- %s\n", pokemon.Pokemon.Name)
@@ -27,5 +26,3 @@ func callbackExplore(cfg *config, args ..string) error {
 
 	return nil
 }
-
-
