@@ -1,14 +1,34 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"log"
 )
 
-func callbackMap(cfg *config) error {
+func callbackMap(cfg *config, args ...string) error {
 	resp, err := cfg.pokeapiClient.ListLocationAreas(cfg.nextLocationAreaURL)
 	if err != nil {
-		log.Fatal(err)
+		return err
+	}
+
+	fmt.Println("Available map locations are:")
+
+	// Printing each location area name
+	for _, area := range resp.Results {
+		fmt.Printf("- %v\n", area.Name)
+	}
+	cfg.nextLocationAreaURL = resp.Next
+	cfg.prevLocationAreaURL = resp.Previous
+	return nil
+}
+
+func callbackMapb(cfg *config, args ...string) error {
+	if cfg.prevLocationAreaURL == nil {
+		return errors.New("you are on the first page")
+	}
+	resp, err := cfg.pokeapiClient.ListLocationAreas(cfg.prevLocationAreaURL)
+	if err != nil {
+		return err
 	}
 
 	fmt.Println("Available map locations are:")
